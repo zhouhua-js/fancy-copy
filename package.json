@@ -2,7 +2,7 @@
   "name": "fancy-copy",
   "version": "0.1.1",
   "description": "",
-  "main": "./src/index.js",
+  "main": "./dist/copy.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zhouhua-js/fancy-copy.git"
@@ -14,10 +14,28 @@
     "url": "https://github.com/zhouhua-js/fancy-copy/issues"
   },
   "homepage": "https://github.com/zhouhua-js/fancy-copy#readme",
+  "scripts": {
+    "prepublish": "webpack"
+  },
   "sideEffects": false,
   "dependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.44",
+    "@babel/preset-env": "^7.0.0-beta.44",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-import-resolver-webpack": "^0.9.0",
+    "eslint-plugin-import": "^2.10.0",
     "is-binary-path": "^2.0.0",
+    "lodash": "^4.17.5",
     "majo": "^0.4.1",
-    "mustache": "^2.3.0"
+    "mustache": "^2.3.0",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14"
   }
 }

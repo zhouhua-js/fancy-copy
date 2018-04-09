@@ -1,7 +1,9 @@
 const majo = require('majo');
 const path = require('path');
-const render = require('mustache').render;
+const transform = require('mustache').render;
 const isBinaryPath = require('is-binary-path');
+const isRegExp = require('lodash/isRegExp');
+const isFunction = require('lodash/isFunction');
 
 function absolutePath(p) {
     if (/^\//.test(p)) {
@@ -10,20 +12,40 @@ function absolutePath(p) {
     return path.resolve(process.cwd(), p);
 }
 
-module.exports = function (source, dest, vars, options) {
+const defaultSettings = {
+    beforeTransform: null,
+    afterTransform: null,
+    filter: null,
+    transform
+};
+
+module.exports = function (source, dest, vars, options = {}) {
+    const settings = { ...defaultSettings, ...options };
     const stream = majo();
     source = absolutePath(source);
     dest = absolutePath(dest);
-    stream
+    let instance = stream
         .source('**', { baseDir: source })
-        .filter(file => !/\.DS_Store$/.test(file))
-        .use(ctx => {
-            for (const file in ctx.fileList) {
-                const content = ctx.fileContents(file)
-                if (!isBinaryPath(filepath)) {
-                    ctx.writeContents(file, mustache.render(content, vars));
-                }
+        .filter(file => !/\.DS_Store$/.test(file));
+    if (settings.beforeTransform) {
+        instance = instance.use(ctx => settings.beforeTransform(ctx.files));
+    }
+    if (isRegExp(settings.filter)) {
+        instance = instance.filter(file => settings.filter.test(file));
+    }
+    else if (isFunction(settings.filter)) {
+        instance = instance.filter(settings.filter);
+    }
+    instance = instance.use(ctx => {
+        ctx.fileList.forEach(file => {
+            const content = ctx.fileContents(file);
+            if (!isBinaryPath(file)) {
+                ctx.writeContents(file, settings.transform(content, vars));
             }
-        })
-        .dest(dest)
-}
+        });
+    });
+    if (settings.afterTransform) {
+        instance = instance.use(ctx => settings.afterTransform(ctx.files));
+    }
+    return instance.dest(dest);
+};
