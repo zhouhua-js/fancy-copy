@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/zhouhua-js/fancy-copy#readme",
   "scripts": {
-    "prepublish": "webpack",
+    "prepublish": "npm run build",
     "build": "webpack"
   },
   "sideEffects": false,
