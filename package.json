@@ -7,7 +7,11 @@
     "type": "git",
     "url": "git+https://github.com/zhouhua-js/fancy-copy.git"
   },
-  "keywords": [],
+  "keywords": [
+    "template",
+    "copy",
+    "dir"
+  ],
   "author": "zhouhua",
   "license": "MIT",
   "bugs": {
@@ -15,7 +19,8 @@
   },
   "homepage": "https://github.com/zhouhua-js/fancy-copy#readme",
   "scripts": {
-    "prepublish": "webpack"
+    "prepublish": "webpack",
+    "build": "webpack"
   },
   "sideEffects": false,
   "dependencies": {
